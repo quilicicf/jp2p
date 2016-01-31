@@ -1,5 +1,22 @@
 [
-  "string1",
-  "string2",
-  "string3"
+  {
+    "jsonPointer": "",
+    "line": 1
+  },
+  {
+    "jsonPointer": "/",
+    "line": 1
+  },
+  {
+    "jsonPointer": "/0",
+    "line": 2
+  },
+  {
+    "jsonPointer": "/1",
+    "line": 3
+  },
+  {
+    "jsonPointer": "/2",
+    "line": 4
+  }
 ]

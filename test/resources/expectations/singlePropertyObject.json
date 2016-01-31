@@ -1,5 +1,18 @@
-{
-  "singleProperty": {
-    "name": "titi"
+[
+  {
+    "jsonPointer": "",
+    "line": 1
+  },
+  {
+    "jsonPointer": "/",
+    "line": 1
+  },
+  {
+    "jsonPointer": "/singleProperty",
+    "line": 2
+  },
+  {
+    "jsonPointer": "/singleProperty/name",
+    "line": 3
   }
-}
+]

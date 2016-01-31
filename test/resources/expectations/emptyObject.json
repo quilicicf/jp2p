@@ -1,1 +1,10 @@
-{}
+[
+  {
+    "jsonPointer": "",
+    "line": 1
+  },
+  {
+    "jsonPointer": "/",
+    "line": 1
+  }
+]

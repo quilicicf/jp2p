@@ -1,1 +1,14 @@
-[ "string" ]
+[
+  {
+    "jsonPointer": "",
+    "line": 1
+  },
+  {
+    "jsonPointer": "/",
+    "line": 1
+  },
+  {
+    "jsonPointer": "/0",
+    "line": 1
+  }
+]
