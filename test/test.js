@@ -1,4 +1,4 @@
-var parser = require('../jsonPointer2lineNumber.js');
+var parser = require('../index.js');
 var fs = require('fs');
 var _ = require('lodash-node');
 var assert   = require('assert');
