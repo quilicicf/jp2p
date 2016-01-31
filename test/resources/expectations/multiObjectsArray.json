@@ -1,0 +1,11 @@
+[
+  {},
+  {
+    "property": "toto"
+  },
+  {
+    "property2": {
+      "name": "titi"
+    }
+  }
+]

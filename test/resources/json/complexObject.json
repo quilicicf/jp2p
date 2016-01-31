@@ -1,0 +1,27 @@
+{
+  "array": [
+    {
+      "arrayItem": "toto"
+    },
+    {
+      "name": "titi"
+    }
+  ],
+  "object": {
+    "depth1": [
+      {
+        "depth2": {
+          "depth3": "tata"
+        }
+      }
+    ]
+  },
+  "null": null,
+  "integer": 1664,
+  "negativeInteger": -86,
+  "doubleProperty": 33.51,
+  "negativeDouble": -33.51,
+  "complexNumber": -156.9841E+01,
+  "booleanTrue": true,
+  "booleanFalse": false
+}

@@ -1,0 +1,30 @@
+{
+  "name": "jsonPointer2lineNumber",
+  "version": "0.0.0",
+  "description": "A utility method to get the line to which a JSON pointer points in a given JSON string.",
+  "main": "jsonPointer2lineNumber.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:quilicicf/jsonPointer2lineNumber.git"
+  },
+  "keywords": [
+    "json",
+    "pointer"
+  ],
+  "author": "quilicicf <quilicicf@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/quilicicf/jsonPointer2lineNumber/issues"
+  },
+  "dependencies": {
+    "json-pointer": "0.2.2",
+    "lodash-node": "3.10.2",
+    "assert": "1.3.0"
+  }
+}
