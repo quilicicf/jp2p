@@ -1,18 +1,18 @@
 [
   {
     "jsonPointer": "",
-    "line": 1
+    "location": { "line": 1, "column": 1 }
   },
   {
     "jsonPointer": "/",
-    "line": 1
+    "location": { "line": 1, "column": 1 }
   },
   {
     "jsonPointer": "/singleProperty",
-    "line": 2
+    "location": { "line": 2, "column": 20 }
   },
   {
     "jsonPointer": "/singleProperty/name",
-    "line": 3
+    "location": { "line": 3, "column": 12 }
   }
 ]

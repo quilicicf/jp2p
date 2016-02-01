@@ -1,10 +1,10 @@
 [
   {
     "jsonPointer": "",
-    "line": 1
+    "location": { "line": 1, "column": 1 }
   },
   {
     "jsonPointer": "/",
-    "line": 1
+    "location": { "line": 1, "column": 1 }
   }
 ]

@@ -1,82 +1,82 @@
 [
   {
     "jsonPointer": "",
-    "line": 1
+    "location": { "line": 1, "column": 1 }
   },
   {
     "jsonPointer": "/",
-    "line": 1
+    "location": { "line": 1, "column": 1 }
   },
   {
     "jsonPointer": "/array",
-    "line": 2
+    "location": { "line": 2, "column": 11 }
   },
   {
     "jsonPointer": "/array/0",
-    "line": 3
+    "location": { "line": 3, "column": 6 }
   },
   {
     "jsonPointer": "/array/0/arrayItem",
-    "line": 4
+    "location": { "line": 4, "column": 19 }
   },
   {
     "jsonPointer": "/array/1",
-    "line": 6
+    "location": { "line": 6, "column": 6 }
   },
   {
     "jsonPointer": "/array/1/name",
-    "line": 7
+    "location": { "line": 7, "column": 14 }
   },
   {
     "jsonPointer": "/object",
-    "line": 10
+    "location": { "line": 10, "column": 12 }
   },
   {
     "jsonPointer": "/object/depth1",
-    "line": 11
+    "location": { "line": 11, "column": 14 }
   },
   {
     "jsonPointer": "/object/depth1/0",
-    "line": 12
+    "location": { "line": 12, "column": 8 }
   },
   {
     "jsonPointer": "/object/depth1/0/depth2",
-    "line": 13
+    "location": { "line": 13, "column": 18 }
   },
   {
     "jsonPointer": "/object/depth1/0/depth2/depth3",
-    "line": 14
+    "location": { "line": 14, "column": 20 }
   },
   {
     "jsonPointer": "/null",
-    "line": 19
+    "location": { "line": 19, "column": 10 }
   },
   {
     "jsonPointer": "/integer",
-    "line": 20
+    "location": { "line": 20, "column": 13 }
   },
   {
     "jsonPointer": "/negativeInteger",
-    "line": 21
+    "location": { "line": 21, "column": 21 }
   },
   {
     "jsonPointer": "/doubleProperty",
-    "line": 22
+    "location": { "line": 22, "column": 20 }
   },
   {
     "jsonPointer": "/negativeDouble",
-    "line": 23
+    "location": { "line": 23, "column": 20 }
   },
   {
     "jsonPointer": "/complexNumber",
-    "line": 24
+    "location": { "line": 24, "column": 19 }
   },
   {
     "jsonPointer": "/booleanTrue",
-    "line": 25
+    "location": { "line": 25, "column": 17 }
   },
   {
     "jsonPointer": "/booleanFalse",
-    "line": 26
+    "location": { "line": 26, "column": 18 }
   }
 ]

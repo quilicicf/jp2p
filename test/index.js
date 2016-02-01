@@ -32,8 +32,9 @@ describe('jsonPointer2lineNumber' , function () {
       var expectations = JSON.parse(fs.readFileSync(expectationsDir + '/' + file, 'utf8'));
 
       _.each(expectations, function (expectation) {
-        it('should return ' + expectation.line + ' for JSON pointer ' + expectation.jsonPointer, function() {
-          assert.equal(expectation.line, parser.getLineNumber(json, expectation.jsonPointer));
+        it('should return ' + JSON.stringify(expectation.location) + ' for JSON pointer ' + expectation.jsonPointer, function() {
+          var actual = parser.getLineNumber(json, expectation.jsonPointer);
+          assert.equal(JSON.stringify(expectation.location), JSON.stringify(actual));
         });
       });
     });
