@@ -7,6 +7,7 @@ module.exports = (function () {
 
   var _ = require('lodash-node');
   var pointer = require('json-pointer');
+
   var currentIndex,     // The index of the current character
     currentChar,        // The current character
     line,               // The current line number
@@ -26,224 +27,260 @@ module.exports = (function () {
     },
     text,
 
-    addSegment = function (segment) {
-      current.push(segment);
-      if (_.isEqual(current, target)) {
-        result = { line: line, column: column };
+  // Methods
+    addSegment,
+    error,
+    parse,
+    value,
+    object,
+    array,
+    number,
+    word,
+    string,
+    blank,
+    next;
+
+  parse = function () {
+    value();
+  };
+
+  addSegment = function (segment) {
+    current.push(segment);
+    if (_.isEqual(current, target)) {
+      result = { line: line, column: column };
+    }
+  };
+
+  error = function (message) {
+    throw {
+      name: 'SyntaxError',
+      message: message,
+      at: currentIndex,
+      text: text
+    };
+  };
+
+  next = function (expected) {
+    if (expected && expected !== currentChar) {
+      error("Expected '" + expected + "' instead of '" + currentChar + "'");
+    }
+
+    currentChar = text.charAt(currentIndex);
+    currentIndex++;
+    column++;
+    return currentChar;
+  };
+
+  number = function () {
+    var number,
+      string = '';
+
+    if (currentChar === '-') {
+      string = '-';
+      next('-');
+    }
+    while (currentChar >= '0' && currentChar <= '9') {
+      string += currentChar;
+      next();
+    }
+    if (currentChar === '.') {
+      string += '.';
+      while (next() && currentChar >= '0' && currentChar <= '9') {
+        string += currentChar;
       }
-    },
-
-    error = function (message) {
-      throw {
-        name: 'SyntaxError',
-        message: message,
-        at: currentIndex,
-        text: text
-      };
-    },
-
-    next = function (expected) {
-      if (expected && expected !== currentChar) {
-        error("Expected '" + expected + "' instead of '" + currentChar + "'");
-      }
-
-      currentChar = text.charAt(currentIndex);
-      currentIndex++;
-      column++;
-      return currentChar;
-    },
-
-    number = function () {
-      var number,
-        string = '';
-
-      if (currentChar === '-') {
-        string = '-';
-        next('-');
+    }
+    if (currentChar === 'e' || currentChar === 'E') {
+      string += currentChar;
+      next();
+      if (currentChar === '-' || currentChar === '+') {
+        string += currentChar;
+        next();
       }
       while (currentChar >= '0' && currentChar <= '9') {
         string += currentChar;
         next();
       }
-      if (currentChar === '.') {
-        string += '.';
-        while (next() && currentChar >= '0' && currentChar <= '9') {
-          string += currentChar;
-        }
-      }
-      if (currentChar === 'e' || currentChar === 'E') {
-        string += currentChar;
-        next();
-        if (currentChar === '-' || currentChar === '+') {
-          string += currentChar;
+    }
+    number = +string;
+    if (!isFinite(number)) {
+      error('Bad number');
+    }
+  };
+
+  string = function () {
+
+    // Parse a string value.
+
+    var hex,
+      i,
+      string = '',
+      uffff;
+
+    // When parsing for string values, we must look for " and \ characters.
+
+    if (currentChar === '"') {
+      while (next()) {
+        if (currentChar === '"') {
           next();
+          return string;
         }
-        while (currentChar >= '0' && currentChar <= '9') {
-          string += currentChar;
+        if (currentChar === '\\') {
           next();
-        }
-      }
-      number = +string;
-      if (!isFinite(number)) {
-        error('Bad number');
-      }
-    },
-
-    string = function () {
-
-      // Parse a string value.
-
-      var hex,
-        i,
-        string = '',
-        uffff;
-
-      // When parsing for string values, we must look for " and \ characters.
-
-      if (currentChar === '"') {
-        while (next()) {
-          if (currentChar === '"') {
-            next();
-            return string;
-          }
-          if (currentChar === '\\') {
-            next();
-            if (currentChar === 'u') {
-              uffff = 0;
-              for (i = 0; i < 4; i += 1) {
-                hex = parseInt(next(), 16);
-                if (!isFinite(hex)) {
-                  break;
-                }
-                uffff = uffff * 16 + hex;
+          if (currentChar === 'u') {
+            uffff = 0;
+            for (i = 0; i < 4; i += 1) {
+              hex = parseInt(next(), 16);
+              if (!isFinite(hex)) {
+                break;
               }
-              string += String.fromCharCode(uffff);
-            } else if (typeof escapee[ currentChar ] === 'string') {
-              string += escapee[ currentChar ];
-            } else {
-              break;
+              uffff = uffff * 16 + hex;
             }
+            string += String.fromCharCode(uffff);
+          } else if (typeof escapee[ currentChar ] === 'string') {
+            string += escapee[ currentChar ];
           } else {
-            string += currentChar;
+            break;
           }
+        } else {
+          string += currentChar;
         }
       }
-      error('Bad string');
-    },
+    }
+    error('Bad string');
+  };
 
-    blank = function () {
-      while (currentChar && currentChar <= ' ') {
-        if (currentChar === '\n') {
-          line++;
-          column = 1;
+  blank = function () {
+    while (currentChar && currentChar <= ' ') {
+      if (currentChar === '\n') {
+        line++;
+        column = 1;
+      }
+      next();
+    }
+  };
+
+  word = function () {
+
+    switch (currentChar) {
+      case 't':
+        next('t');
+        next('r');
+        next('u');
+        next('e');
+        return;
+      case 'f':
+        next('f');
+        next('a');
+        next('l');
+        next('s');
+        next('e');
+        return;
+      case 'n':
+        next('n');
+        next('u');
+        next('l');
+        next('l');
+        return;
+    }
+    error("Unexpected '" + currentChar + "'");
+  };
+
+  object = function () {
+    if (result) {
+      return;
+    }
+
+    var key,
+      object = {};
+
+    if (currentChar === '{') {
+      next('{');
+      blank();
+      if (currentChar === '}') {
+        next('}');
+        return;
+      }
+      while (currentChar) {
+        key = string();
+        addSegment(key);
+
+        if (result) {
+          return;
         }
-        next();
-      }
-    },
 
-    word = function () {
-
-      // true, false, or null.
-
-      switch (currentChar) {
-        case 't':
-          next('t');
-          next('r');
-          next('u');
-          next('e');
-          return;
-        case 'f':
-          next('f');
-          next('a');
-          next('l');
-          next('s');
-          next('e');
-          return;
-        case 'n':
-          next('n');
-          next('u');
-          next('l');
-          next('l');
-          return;
-      }
-      error("Unexpected '" + currentChar + "'");
-    },
-
-    value,  // Place holder for the value function.
-
-    array = function () {
-
-      // Parse an array value.
-
-      var array = [],
-        arrayIndex = -1;
-
-      if (currentChar === '[') {
-        next('[');
         blank();
-        if (currentChar === ']') {
-          next(']');
-          current.pop();
+        next(':');
+        if (Object.hasOwnProperty.call(object, key)) {
+          error('Duplicate key "' + key + '"');
+        }
+        object[ key ] = value();
+
+        if (result) {
           return;
         }
 
-        while (currentChar) {
-          arrayIndex++;
-          addSegment('' + arrayIndex);
-          value();
-          blank();
-          current.pop();
-          if (currentChar === ']') {
-            next(']');
-            return;
-          }
-          next(',');
-          blank();
-        }
-      }
-      error('Bad array');
-    },
-
-    object = function () {
-
-      // Parse an object value.
-
-      var key,
-        object = {};
-
-      if (currentChar === '{') {
-        next('{');
+        current.pop();
         blank();
         if (currentChar === '}') {
           next('}');
           return;
         }
-        while (currentChar) {
-          key = string();
-          addSegment(key);
-          blank();
-          next(':');
-          if (Object.hasOwnProperty.call(object, key)) {
-            error('Duplicate key "' + key + '"');
-          }
-          object[ key ] = value();
-          current.pop();
-          blank();
-          if (currentChar === '}') {
-            next('}');
-            return;
-          }
-          next(',');
-          blank();
-        }
+        next(',');
+        blank();
       }
-      error('Bad object');
-    };
+    }
+    error('Bad object');
+  };
+
+  array = function () {
+    if (result) {
+      return;
+    }
+
+    var array = [],
+      arrayIndex = -1;
+
+    if (currentChar === '[') {
+      next('[');
+      blank();
+      if (currentChar === ']') {
+        next(']');
+        current.pop();
+        return;
+      }
+
+      while (currentChar) {
+        arrayIndex++;
+        addSegment('' + arrayIndex);
+
+        if (result) {
+          return;
+        }
+
+        value();
+        
+        if (result) {
+          return;
+        }
+
+        blank();
+        current.pop();
+        if (currentChar === ']') {
+          next(']');
+          return;
+        }
+        next(',');
+        blank();
+      }
+    }
+    error('Bad array');
+  };
 
   value = function () {
+    if (result) {
+      return;
+    }
 
-    // Parse a JSON value. It could be an object, an array, a string, a number,
-    // or a word.
     blank();
     switch (currentChar) {
       case '{':
@@ -273,21 +310,16 @@ module.exports = (function () {
       target = pointer.parse(jsonPointer);
       line = 1;
       column = 1;
-      result = { line: line, column: column };
-      if (_.isEmpty(target)) {
-        return result;
+      result = null;
+      if (_.isEmpty(target) || '/' === jsonPointer) {
+        return { line: line, column: column };
       }
 
       text = source;
       currentIndex = 0;
       currentChar = ' ';
       current = [];
-      value();
-      blank();
-      if (currentChar) {
-        error('Syntax error');
-      }
-
+      parse();
       return result;
     }
   };

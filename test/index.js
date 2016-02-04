@@ -1,12 +1,12 @@
 var should = require('chai').should(),
-    ds = require('../index'),
-    parser = require('../index.js'),
-    fs = require('fs'),
-    fr = require('../lib/folderReader.js'),
-    _ = require('lodash-node'),
-    assert = require('assert');
+  ds = require('../index'),
+  parser = require('../index.js'),
+  fs = require('fs'),
+  fr = require('../lib/folderReader.js'),
+  _ = require('lodash-node'),
+  assert = require('assert');
 
-describe('jsonPointer2lineNumber' , function () {
+describe('jsonPointer2lineNumber', function () {
   var resourcesDir = __dirname + '/resources';
   var jsonDir = resourcesDir + '/json';
   var expectationsDir = resourcesDir + '/expectations';
@@ -27,12 +27,12 @@ describe('jsonPointer2lineNumber' , function () {
   }
 
   _.each(jsonFiles, function (file) {
-    describe('file ' + file, function() {
+    describe('file ' + file, function () {
       var json = fs.readFileSync(jsonDir + '/' + file, 'utf8');
       var expectations = JSON.parse(fs.readFileSync(expectationsDir + '/' + file, 'utf8'));
 
       _.each(expectations, function (expectation) {
-        it('should return ' + JSON.stringify(expectation.location) + ' for JSON pointer ' + expectation.jsonPointer, function() {
+        it('should return ' + JSON.stringify(expectation.location) + ' for JSON pointer ' + expectation.jsonPointer, function () {
           var actual = parser.getLineNumber(json, expectation.jsonPointer);
           assert.equal(JSON.stringify(expectation.location), JSON.stringify(actual));
         });
