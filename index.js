@@ -8,14 +8,7 @@ module.exports = (function () {
   var _ = require('lodash-node');
   var pointer = require('json-pointer');
 
-  var currentIndex,     // The index of the current character
-    currentChar,        // The current character
-    line,               // The current line number
-    column,             // The current line number
-    target,             // The JSON pointer to search for (as an array)
-    current,            // The JSON pointer of the current location
-    result,
-    escapee = {
+  var escapee = {
       '"': '"',
       '\\': '\\',
       '/': '/',
@@ -25,9 +18,7 @@ module.exports = (function () {
       r: '\r',
       t: '\t'
     },
-    text,
 
-  // Methods
     addSegment,
     error,
     parse,
@@ -40,14 +31,14 @@ module.exports = (function () {
     blank,
     next;
 
-  parse = function () {
-    value();
+  parse = function (state) {
+    value(state);
   };
 
-  addSegment = function (segment) {
-    current.push(segment);
-    if (_.isEqual(current, target)) {
-      result = { line: line, column: column };
+  addSegment = function (segment, state) {
+    state.currentJsonPointer.push(segment);
+    if (_.isEqual(state.currentJsonPointer, state.targetJsonPointer)) {
+      state.result = { line: state.currentLine, column: state.currentColumn };
     }
   };
 
@@ -60,45 +51,45 @@ module.exports = (function () {
     };
   };
 
-  next = function (expected) {
-    if (expected && expected !== currentChar) {
-      error("Expected '" + expected + "' instead of '" + currentChar + "'");
+  next = function (state, expected) {
+    if (expected && expected !== state.currentChar) {
+      error("Expected '" + expected + "' instead of '" + state.currentChar + "'");
     }
 
-    currentChar = text.charAt(currentIndex);
-    currentIndex++;
-    column++;
-    return currentChar;
+    state.currentChar = state.text.charAt(state.currentIndex);
+    state.currentIndex++;
+    state.currentColumn++;
+    return state.currentChar;
   };
 
-  number = function () {
+  number = function (state) {
     var number,
       string = '';
 
-    if (currentChar === '-') {
+    if (state.currentChar === '-') {
       string = '-';
-      next('-');
+      next(state, '-');
     }
-    while (currentChar >= '0' && currentChar <= '9') {
-      string += currentChar;
-      next();
+    while (state.currentChar >= '0' && state.currentChar <= '9') {
+      string += state.currentChar;
+      next(state);
     }
-    if (currentChar === '.') {
+    if (state.currentChar === '.') {
       string += '.';
-      while (next() && currentChar >= '0' && currentChar <= '9') {
-        string += currentChar;
+      while (next(state) && state.currentChar >= '0' && state.currentChar <= '9') {
+        string += state.currentChar;
       }
     }
-    if (currentChar === 'e' || currentChar === 'E') {
-      string += currentChar;
-      next();
-      if (currentChar === '-' || currentChar === '+') {
-        string += currentChar;
-        next();
+    if (state.currentChar === 'e' || state.currentChar === 'E') {
+      string += state.currentChar;
+      next(state);
+      if (state.currentChar === '-' || state.currentChar === '+') {
+        string += state.currentChar;
+        next(state);
       }
-      while (currentChar >= '0' && currentChar <= '9') {
-        string += currentChar;
-        next();
+      while (state.currentChar >= '0' && state.currentChar <= '9') {
+        string += state.currentChar;
+        next(state);
       }
     }
     number = +string;
@@ -107,7 +98,7 @@ module.exports = (function () {
     }
   };
 
-  string = function () {
+  string = function (state) {
 
     // Parse a string value.
 
@@ -118,188 +109,189 @@ module.exports = (function () {
 
     // When parsing for string values, we must look for " and \ characters.
 
-    if (currentChar === '"') {
-      while (next()) {
-        if (currentChar === '"') {
-          next();
+    if (state.currentChar === '"') {
+      while (next(state)) {
+        if (state.currentChar === '"') {
+          next(state);
           return string;
         }
-        if (currentChar === '\\') {
-          next();
-          if (currentChar === 'u') {
+        if (state.currentChar === '\\') {
+          next(state);
+          if (state.currentChar === 'u') {
             uffff = 0;
             for (i = 0; i < 4; i += 1) {
-              hex = parseInt(next(), 16);
+              hex = parseInt(next(state), 16);
               if (!isFinite(hex)) {
                 break;
               }
               uffff = uffff * 16 + hex;
             }
             string += String.fromCharCode(uffff);
-          } else if (typeof escapee[ currentChar ] === 'string') {
-            string += escapee[ currentChar ];
+          } else if (typeof escapee[ state.currentChar ] === 'string') {
+            string += escapee[ state.currentChar ];
           } else {
             break;
           }
         } else {
-          string += currentChar;
+          string += state.currentChar;
         }
       }
     }
     error('Bad string');
   };
 
-  blank = function () {
-    while (currentChar && currentChar <= ' ') {
-      if (currentChar === '\n') {
-        line++;
-        column = 1;
+  blank = function (state) {
+    while (state.currentChar && state.currentChar <= ' ') {
+      if (state.currentChar === '\n') {
+        state.currentLine++;
+        state.currentColumn = 1;
       }
-      next();
+      next(state);
     }
   };
 
-  word = function () {
+  word = function (state) {
 
-    switch (currentChar) {
+    switch (state.currentChar) {
       case 't':
-        next('t');
-        next('r');
-        next('u');
-        next('e');
+        next(state, 't');
+        next(state, 'r');
+        next(state, 'u');
+        next(state, 'e');
         return;
       case 'f':
-        next('f');
-        next('a');
-        next('l');
-        next('s');
-        next('e');
+        next(state, 'f');
+        next(state, 'a');
+        next(state, 'l');
+        next(state, 's');
+        next(state, 'e');
         return;
       case 'n':
-        next('n');
-        next('u');
-        next('l');
-        next('l');
+        next(state, 'n');
+        next(state, 'u');
+        next(state, 'l');
+        next(state, 'l');
         return;
     }
-    error("Unexpected '" + currentChar + "'");
+    error("Unexpected '" + state.currentChar + "'");
   };
 
-  object = function () {
-    if (result) {
+  object = function (state) {
+    if (state.result) {
       return;
     }
 
     var key,
       object = {};
 
-    if (currentChar === '{') {
-      next('{');
-      blank();
-      if (currentChar === '}') {
-        next('}');
+    if (state.currentChar === '{') {
+      next(state, '{');
+      blank(state);
+      if (state.currentChar === '}') {
+        next(state, '}');
         return;
       }
-      while (currentChar) {
-        key = string();
-        addSegment(key);
+      while (state.currentChar) {
+        key = string(state);
+        addSegment(key, state);
 
-        if (result) {
+        if (state.result) {
           return;
         }
 
-        blank();
-        next(':');
+        blank(state);
+        next(state, ':');
         if (Object.hasOwnProperty.call(object, key)) {
           error('Duplicate key "' + key + '"');
         }
-        object[ key ] = value();
+        object[ key ] = value(state);
 
-        if (result) {
+        if (state.result) {
           return;
         }
 
-        current.pop();
-        blank();
-        if (currentChar === '}') {
-          next('}');
+        state.currentJsonPointer.pop();
+        blank(state);
+        if (state.currentChar === '}') {
+          next(state, '}');
           return;
         }
-        next(',');
-        blank();
+        next(state, ',');
+        blank(state);
       }
     }
     error('Bad object');
   };
 
-  array = function () {
-    if (result) {
+  array = function (state) {
+    if (state.result) {
       return;
     }
 
     var array = [],
       arrayIndex = -1;
 
-    if (currentChar === '[') {
-      next('[');
-      blank();
-      if (currentChar === ']') {
-        next(']');
+    if (state.currentChar === '[') {
+      next(state, '[');
+      blank(state);
+      if (state.currentChar === ']') {
+        next(state, ']');
         current.pop();
         return;
       }
 
-      while (currentChar) {
+      while (state.currentChar) {
         arrayIndex++;
-        addSegment('' + arrayIndex);
+        addSegment('' + arrayIndex, state);
 
-        if (result) {
+        if (state.result) {
           return;
         }
 
-        value();
-        
-        if (result) {
+        value(state);
+
+        if (state.result) {
           return;
         }
 
-        blank();
-        current.pop();
-        if (currentChar === ']') {
-          next(']');
+        blank(state);
+        state.currentJsonPointer.pop();
+        if (state.currentChar === ']') {
+          next(state, ']');
           return;
         }
-        next(',');
-        blank();
+        next(state, ',');
+        blank(state);
       }
     }
     error('Bad array');
   };
 
-  value = function () {
-    if (result) {
+  value = function (state) {
+    if (state.result) {
       return;
     }
 
-    blank();
-    switch (currentChar) {
+    blank(state);
+    switch (state.currentChar) {
       case '{':
-        object();
+        object(state);
         return;
       case '[':
-        array();
+        array(state);
         return;
       case '"':
-        string();
+        string(state);
         return;
       case '-':
-        number();
+        number(state);
         return;
       default:
-        if (currentChar >= '0' && currentChar <= '9') {
-          number();
+        if (state.currentChar >= '0'
+          && state.currentChar <= '9') {
+          number(state);
         } else {
-          word();
+          word(state);
         }
         return;
     }
@@ -307,20 +299,23 @@ module.exports = (function () {
 
   return {
     getLineNumber: function (source, jsonPointer) {
-      target = pointer.parse(jsonPointer);
-      line = 1;
-      column = 1;
-      result = null;
-      if (_.isEmpty(target) || '/' === jsonPointer) {
-        return { line: line, column: column };
+      var state = {
+        currentIndex: 0,
+        currentChar: ' ',
+        currentLine: 1,
+        currentColumn: 1,
+        targetJsonPointer: pointer.parse(jsonPointer),
+        currentJsonPointer: [],
+        result: null,
+        text: source,
+      };
+
+      if (_.isEmpty(state.targetJsonPointer) || '/' === jsonPointer) {
+        return { line: 1, column: 1 };
       }
 
-      text = source;
-      currentIndex = 0;
-      currentChar = ' ';
-      current = [];
-      parse();
-      return result;
+      parse(state);
+      return state.result;
     }
   };
 }());
