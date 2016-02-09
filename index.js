@@ -5,7 +5,7 @@ module.exports = (function () {
   // given JSON pointer.
   // More information about JSON pointers at: http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-08
 
-  var _ = require('lodash-node');
+  var _ = require('lodash');
   var pointer = require('json-pointer');
 
   var escapee = {

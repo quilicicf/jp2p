@@ -1,10 +1,10 @@
 var should = require('chai').should(),
+  assert = require('chai').assert,
   ds = require('../index'),
   parser = require('../index.js'),
   fs = require('fs'),
   fr = require('../lib/folderReader.js'),
-  _ = require('lodash-node'),
-  assert = require('assert');
+  _ = require('lodash');
 
 describe('jp2p', function () {
   var resourcesDir = __dirname + '/resources';
@@ -34,7 +34,7 @@ describe('jp2p', function () {
       _.each(expectations, function (expectation) {
         it('should return ' + JSON.stringify(expectation.location) + ' for JSON pointer ' + expectation.jsonPointer, function () {
           var actual = parser.getLineNumber(json, expectation.jsonPointer);
-          assert.equal(JSON.stringify(expectation.location), JSON.stringify(actual));
+          assert.deepEqual(expectation.location, actual);
         });
       });
     });
