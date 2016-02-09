@@ -29,10 +29,12 @@ Any contribution is welcome, below are a few contribution guidelines but first g
   1. Hack on a separate topic branch created from the latest `master`.
   1. Commit and push the topic branch.
   1. Make a pull request.
-1. Code style
-  1. Indent is 2 spaces.
+1. Tests
+  1. You can run tests with `npm test`
+  1. All tests should pass on any pull request
+  1. Please add a test for non-regression on your dev
 1. Other
-  1. Code should pass linting rules in `.jscsrc`.
+  1. Code should pass linting rules in `.jscsrc`& `.jshint`.
   1. Let me know by mail before contributing (don't want to waste your time on something already being done)
   1. You don't know how or don't have the time to contribute ? Don't hesitate to share your ideas in issues
 
