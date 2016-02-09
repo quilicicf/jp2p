@@ -6,7 +6,7 @@ var should = require('chai').should(),
   _ = require('lodash-node'),
   assert = require('assert');
 
-describe('jsonPointer2lineNumber', function () {
+describe('jp2p', function () {
   var resourcesDir = __dirname + '/resources';
   var jsonDir = resourcesDir + '/json';
   var expectationsDir = resourcesDir + '/expectations';

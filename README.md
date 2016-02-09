@@ -1,23 +1,23 @@
-# jsonPointer2lineNumber
+# jp2p (JSON pointer to position)
 
-[![Dependency Status](https://david-dm.org/quilicicf/linter-raml.svg)](https://david-dm.org/quilicicf/jsonPointer2lineNumber)
+[![Dependency Status](https://david-dm.org/quilicicf/linter-raml.svg)](https://david-dm.org/quilicicf/jp2p)
 
-A utility method to get the line to which a JSON pointer points in a given JSON string.
+A utility method to get the line & column to which a JSON pointer points in a given JSON string.
 
-More information about JSON pointers [in the RFC6901](http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-08);
+More information about JSON pointers [in the RFC6901](http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-09);
 
 ## How to use
 
 The module only contains one method, use it like this:
 
 ```js
-var j2l = require('jsonPointer2lineNumber');
+var jp2p = require('jp2p');
 var jsonString = '{\n  "toto": "tata"\n}';
 
-console.log(j2l.getLineNumber(jsonString, '/toto'));
+console.log(jp2p.getLineNumber(jsonString, '/toto'));
 ```
 
-In this case it will output `2`. The line in the jsonString at which the element at JSON pointer `/toto` is defined.
+In this case it will output `{ line: 2, column: 10 }`. The line in the jsonString at which the element at JSON pointer `/toto` is defined.
 
 ## Contributing
 

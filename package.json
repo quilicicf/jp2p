@@ -1,5 +1,5 @@
 {
-  "name": "jsonPointer2lineNumber",
+  "name": "jp2p",
   "version": "0.0.0",
   "description": "A utility method to get the line to which a JSON pointer points in a given JSON string.",
   "main": "index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/quilicicf/jsonPointer2lineNumber.git"
+    "url": "https://github.com/quilicicf/jp2p.git"
   },
   "keywords": [
     "json",
@@ -20,7 +20,7 @@
   "author": "quilicicf <quilicicf@gmail.com> (https://github.com/quilicicf)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/quilicicf/jsonPointer2lineNumber/issues"
+    "url": "https://github.com/quilicicf/jp2p/issues"
   },
   "dependencies": {
     "json-pointer": "0.2.2",
