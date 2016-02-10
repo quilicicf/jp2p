@@ -42,18 +42,18 @@ module.exports = (function () {
     }
   };
 
-  error = function (message) {
+  error = function (message, state) {
     throw {
       name: 'SyntaxError',
       message: message,
-      at: currentIndex,
-      text: text
+      at: state.currentIndex,
+      text: state.text
     };
   };
 
   next = function (state, expected) {
     if (expected && expected !== state.currentChar) {
-      error("Expected '" + expected + "' instead of '" + state.currentChar + "'");
+      error('Expected "' + expected + '" instead of "' + state.currentChar + '"', state);
     }
 
     state.currentChar = state.text.charAt(state.currentIndex);
@@ -94,7 +94,7 @@ module.exports = (function () {
     }
     number = +string;
     if (!isFinite(number)) {
-      error('Bad number');
+      error('Bad number', state);
     }
   };
 
@@ -137,7 +137,7 @@ module.exports = (function () {
         }
       }
     }
-    error('Bad string');
+    error('Bad string', state);
   };
 
   blank = function (state) {
@@ -173,7 +173,7 @@ module.exports = (function () {
         next(state, 'l');
         return;
     }
-    error("Unexpected '" + state.currentChar + "'");
+    error('Unexpected "' + state.currentChar + '"', state);
   };
 
   object = function (state) {
@@ -202,7 +202,7 @@ module.exports = (function () {
         blank(state);
         next(state, ':');
         if (Object.hasOwnProperty.call(object, key)) {
-          error('Duplicate key "' + key + '"');
+          error('Duplicate key "' + key + '"', state);
         }
         object[ key ] = value(state);
 
@@ -220,7 +220,7 @@ module.exports = (function () {
         blank(state);
       }
     }
-    error('Bad object');
+    error('Bad object', state);
   };
 
   array = function (state) {
@@ -228,15 +228,14 @@ module.exports = (function () {
       return;
     }
 
-    var array = [],
-      arrayIndex = -1;
+    var arrayIndex = -1;
 
     if (state.currentChar === '[') {
       next(state, '[');
       blank(state);
       if (state.currentChar === ']') {
         next(state, ']');
-        current.pop();
+        state.currentJsonPointer.pop();
         return;
       }
 
@@ -264,7 +263,7 @@ module.exports = (function () {
         blank(state);
       }
     }
-    error('Bad array');
+    error('Bad array', state);
   };
 
   value = function (state) {
