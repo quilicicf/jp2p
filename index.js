@@ -99,15 +99,10 @@ module.exports = (function () {
   };
 
   string = function (state) {
-
-    // Parse a string value.
-
     var hex,
       i,
       string = '',
       uffff;
-
-    // When parsing for string values, we must look for " and \ characters.
 
     if (state.currentChar === '"') {
       while (next(state)) {
