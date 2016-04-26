@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "json-pointer": "0.3.0",
-    "lodash": "4.3.0",
+    "lodash": "4.11.1",
     "fs": "0.0.2",
     "mocha": "2.4.5",
     "chai": "3.5.0",
