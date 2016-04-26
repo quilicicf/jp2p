@@ -23,7 +23,7 @@
     "url": "https://github.com/quilicicf/jp2p/issues"
   },
   "dependencies": {
-    "json-pointer": "0.3.0",
+    "json-pointer": "0.5.0",
     "lodash": "4.11.1",
     "fs": "0.0.2",
     "mocha": "2.4.5",
