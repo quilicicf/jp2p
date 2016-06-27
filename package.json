@@ -1,6 +1,6 @@
 {
   "name": "jp2p",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A utility method to get the line to which a JSON pointer points in a given JSON string.",
   "main": "index.js",
   "directories": {
