@@ -32,7 +32,7 @@
     "jscs": "^3.0.5",
     "json-pointer": "^0.5.0",
     "lodash": "^4.13.1",
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.0",
     "snyk": "^1.16.0"
   },
   "snyk": true
