@@ -20,10 +20,7 @@
   "laxbreak": true,
   "laxcomma": true,
   "globals": {
-    "angular": false,
-    "_": false,
-    "moment": false,
-    "$": false,
-    "JSZip": false
+    "describe": false,
+    "it": false
   }
 }

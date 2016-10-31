@@ -1,21 +1,21 @@
-var should = require('chai').should(),
-  assert = require('chai').assert,
-  ds = require('../index'),
+'use strict';
+
+let assert = require('chai').assert,
   parser = require('../index.js'),
   fs = require('fs'),
   fr = require('../lib/folderReader.js'),
   _ = require('lodash');
 
-describe('jp2p', function () {
-  var resourcesDir = __dirname + '/resources';
-  var jsonDir = resourcesDir + '/json';
-  var expectationsDir = resourcesDir + '/expectations';
+describe('jp2p', () => {
+  let resourcesDir = __dirname + '/resources';
+  let jsonDir = resourcesDir + '/json';
+  let expectationsDir = resourcesDir + '/expectations';
 
-  var jsonFiles = fr._getFilesFromFolder(jsonDir);
-  var expectationsFiles = fr._getFilesFromFolder(expectationsDir);
+  let jsonFiles = fr._getFilesFromFolder(jsonDir);
+  let expectationsFiles = fr._getFilesFromFolder(expectationsDir);
 
   if (!_.isEqual(jsonFiles, expectationsFiles)) {
-    var missingExpectationsFiles = _.difference(jsonFiles, expectationsFiles);
+    let missingExpectationsFiles = _.difference(jsonFiles, expectationsFiles);
     if (!_.isEmpty(missingExpectationsFiles)) {
       throw new Error('Some JSON files do not have their expectations: ' + JSON.stringify(missingExpectationsFiles));
     }
@@ -26,14 +26,14 @@ describe('jp2p', function () {
     }
   }
 
-  _.each(jsonFiles, function (file) {
-    describe('file ' + file, function () {
-      var json = fs.readFileSync(jsonDir + '/' + file, 'utf8');
-      var expectations = JSON.parse(fs.readFileSync(expectationsDir + '/' + file, 'utf8'));
+  _.each(jsonFiles, file => {
+    describe('file ' + file, () => {
+      let json = fs.readFileSync(jsonDir + '/' + file, 'utf8');
+      let expectations = JSON.parse(fs.readFileSync(expectationsDir + '/' + file, 'utf8'));
 
-      _.each(expectations, function (expectation) {
-        it('should return ' + JSON.stringify(expectation.location) + ' for JSON pointer ' + expectation.jsonPointer, function () {
-          var actual = parser.getLineNumber(json, expectation.jsonPointer);
+      _.each(expectations, expectation => {
+        it('should return ' + JSON.stringify(expectation.location) + ' for JSON pointer ' + expectation.jsonPointer, () => {
+          let actual = parser.getLineNumber(json, expectation.jsonPointer);
           assert.deepEqual(expectation.location, actual);
         });
       });

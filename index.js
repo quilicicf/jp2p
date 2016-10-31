@@ -1,14 +1,14 @@
-module.exports = (function () {
+module.exports = (() => {
   'use strict';
 
   // This is a function that can find the line in an input JSON string that corresponds to the
   // given JSON pointer.
   // More information about JSON pointers at: http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-08
 
-  var _ = require('lodash');
-  var pointer = require('json-pointer');
+  const _ = require('lodash');
+  const pointer = require('json-pointer');
 
-  var escapee = {
+  let escapee = {
       '"': '"',
       '\\': '\\',
       '/': '/',
@@ -31,18 +31,18 @@ module.exports = (function () {
     blank,
     next;
 
-  parse = function (state) {
+  parse = state => {
     value(state);
   };
 
-  addSegment = function (segment, state) {
+  addSegment = (segment, state) => {
     state.currentJsonPointer.push(segment);
     if (_.isEqual(state.currentJsonPointer, state.targetJsonPointer)) {
       state.result = { line: state.currentLine, column: state.currentColumn };
     }
   };
 
-  error = function (message, state) {
+  error = (message, state) => {
     throw {
       name: 'SyntaxError',
       message: message,
@@ -51,7 +51,7 @@ module.exports = (function () {
     };
   };
 
-  next = function (state, expected) {
+  next = (state, expected) => {
     if (expected && expected !== state.currentChar) {
       error('Expected "' + expected + '" instead of "' + state.currentChar + '"', state);
     }
@@ -62,8 +62,8 @@ module.exports = (function () {
     return state.currentChar;
   };
 
-  number = function (state) {
-    var number,
+  number = state => {
+    let number,
       string = '';
 
     if (state.currentChar === '-') {
@@ -98,8 +98,8 @@ module.exports = (function () {
     }
   };
 
-  string = function (state) {
-    var hex,
+  string = state => {
+    let hex,
       i,
       string = '',
       uffff;
@@ -135,7 +135,7 @@ module.exports = (function () {
     error('Bad string', state);
   };
 
-  blank = function (state) {
+  blank = state => {
     while (state.currentChar && state.currentChar <= ' ') {
       if (state.currentChar === '\n') {
         state.currentLine++;
@@ -145,7 +145,7 @@ module.exports = (function () {
     }
   };
 
-  word = function (state) {
+  word = state => {
 
     switch (state.currentChar) {
       case 't':
@@ -171,12 +171,12 @@ module.exports = (function () {
     error('Unexpected "' + state.currentChar + '"', state);
   };
 
-  object = function (state) {
+  object = state => {
     if (state.result) {
       return;
     }
 
-    var key,
+    let key,
       object = {};
 
     if (state.currentChar === '{') {
@@ -218,12 +218,12 @@ module.exports = (function () {
     error('Bad object', state);
   };
 
-  array = function (state) {
+  array = state => {
     if (state.result) {
       return;
     }
 
-    var arrayIndex = -1;
+    let arrayIndex = -1;
 
     if (state.currentChar === '[') {
       next(state, '[');
@@ -261,7 +261,7 @@ module.exports = (function () {
     error('Bad array', state);
   };
 
-  value = function (state) {
+  value = state => {
     if (state.result) {
       return;
     }
@@ -292,8 +292,8 @@ module.exports = (function () {
   };
 
   return {
-    getLineNumber: function (source, jsonPointer) {
-      var state = {
+    getLineNumber: (source, jsonPointer) => {
+      let state = {
         currentIndex: 0,
         currentChar: ' ',
         currentLine: 1,
@@ -312,4 +312,4 @@ module.exports = (function () {
       return state.result;
     }
   };
-}());
+})();
