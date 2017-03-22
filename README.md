@@ -1,6 +1,7 @@
 # jp2p (JSON pointer to position)
 
 [![Dependency Status](https://david-dm.org/quilicicf/jp2p.svg)](https://david-dm.org/quilicicf/jp2p)
+[![Known Vulnerabilities](https://snyk.io/test/github/quilicicf/jp2p/badge.svg)](https://snyk.io/test/github/quilicicf/jp2p)
 
 A utility method to get the line & column to which a JSON pointer points in a given JSON string.
 

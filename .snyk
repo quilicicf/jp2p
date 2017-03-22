@@ -1,14 +1,4 @@
-version: v1.5.0
-ignore:
-  'npm:minimatch:20160620':
-    - mocha > glob > minimatch:
-        reason: None given
-        expires: '2016-07-27T07:20:40.402Z'
-patch:
-  'npm:minimatch:20160620':
-    - babel-jscs > babel-core > minimatch:
-        patched: '2016-06-27T07:19:31.124Z'
-    - jscs > babel-jscs > babel-core > minimatch:
-        patched: '2016-06-27T07:19:31.124Z'
-    - jscs > vow-fs > glob > minimatch:
-        patched: '2016-06-27T07:19:31.124Z'
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.7.0
+ignore: {}
+patch: {}
