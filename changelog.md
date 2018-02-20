@@ -1,3 +1,6 @@
+### 0.0.8
+- Fix snyk security warning
+
 ### 0.0.7
 - Fix snyk security warning
 
