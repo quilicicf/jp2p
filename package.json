@@ -25,14 +25,15 @@
     "url": "https://github.com/quilicicf/jp2p/issues"
   },
   "dependencies": {
-    "json-pointer": "^0.6.0",
-    "lodash": "^4.16.5"
+    "json-pointer": "0.6.0",
+    "lodash": "4.16.5"
   },
   "devDependencies": {
-    "jscs": "^3.0.7",
-    "mocha": "^3.1.2",
-    "chai": "^3.5.0",
-    "snyk": "^1.19.1"
+    "chai": "3.5.0",
+    "jscs": "3.0.7",
+    "mocha": "3.1.2",
+    "npm-check-updates": "2.14.0",
+    "snyk": "1.19.1"
   },
   "snyk": true,
   "ES6": true
