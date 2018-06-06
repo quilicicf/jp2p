@@ -1,3 +1,8 @@
+### 0.0.9
+- Fix npm 6 vulnerability warnings
+- Switch to eslint for linting
+- Start fixing eslint warnings, more refactoring necessary to finish
+
 ### 0.0.8
 - Fix snyk security warning
 
