@@ -1,0 +1,4 @@
+shell/
+specs/
+*.pem
+*.md

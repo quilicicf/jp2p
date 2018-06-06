@@ -22,7 +22,7 @@ In this case it will output `{ line: 2, column: 10 }`. The line in the jsonStrin
 
 ## Contributing
 
-You think it lacks a feature ? Spot a bug ? Unsufficient documentation ?
+You think it lacks a feature ? Spot a bug ? Insufficient documentation ?
 Any contribution is welcome, below are a few contribution guidelines but first get a look at [these general guidelines](https://github.com/atom/atom/blob/master/CONTRIBUTING.md#styleguides):
 
 1. Git
@@ -35,7 +35,7 @@ Any contribution is welcome, below are a few contribution guidelines but first g
     1. All tests should pass on any pull request
     1. Please add a test for non-regression on your dev
 1. Other
-    1. Code should pass linting rules in `.jscsrc`& `.jshint`.
+    1. Code should pass linting by eslint (run `npm run lint` to test this).
     1. Let me know by mail before contributing (don't want to waste your time on something already being done)
     1. You don't know how or don't have the time to contribute ? Don't hesitate to share your ideas in issues
 
