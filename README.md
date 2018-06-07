@@ -12,10 +12,10 @@ More information about JSON pointers [in the RFC6901](http://tools.ietf.org/html
 The module only contains one method, use it like this:
 
 ```js
-var jp2p = require('jp2p');
-var jsonString = '{\n  "toto": "tata"\n}';
+const { getLineNumber } = require('jp2p');
+const jsonString = '{\n  "toto": "tata"\n}';
 
-console.log(jp2p.getLineNumber(jsonString, '/toto'));
+console.log(getLineNumber(jsonString, '/toto'));
 ```
 
 In this case it will output `{ line: 2, column: 10 }`. The line in the jsonString at which the element at JSON pointer `/toto` is defined.
