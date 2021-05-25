@@ -24,7 +24,7 @@
     "url": "https://github.com/quilicicf/jp2p/issues"
   },
   "dependencies": {
-    "json-pointer": "0.6.0",
+    "json-pointer": "0.6.1",
     "lodash": "4.17.21"
   },
   "devDependencies": {
