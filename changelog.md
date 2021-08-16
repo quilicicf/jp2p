@@ -1,5 +1,6 @@
-### 0.0.11
+### 1.0.0
 
+- No breaking changes, but this package won't evolve and was released so it should have been a 1.x.x for a long time already
 - Upgrade libs to remove vulnerability warning
 
 ### 0.0.10
