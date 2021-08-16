@@ -1,3 +1,7 @@
+### 0.0.11
+
+- Upgrade libs to remove vulnerability warning
+
 ### 0.0.10
 
 - Upgrade lodash to remove vulnerability warning
