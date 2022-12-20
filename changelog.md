@@ -1,3 +1,7 @@
+### 1.0.1
+
+- :lock: Upgrade libs
+
 ### 1.0.0
 
 - No breaking changes, but this package won't evolve and was released so it should have been a 1.x.x for a long time already
