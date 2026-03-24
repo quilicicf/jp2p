@@ -1,11 +1,14 @@
 # jp2p (JSON pointer to position)
 
-[![Dependency Status](https://img.shields.io/depfu/dependencies/github/quilicicf/jp2p)](https://depfu.com/repos/github/quilicicf/jp2p)
-[![Known Vulnerabilities](https://snyk.io/test/github/quilicicf/jp2p/badge.svg)](https://snyk.io/test/github/quilicicf/jp2p)
-
 A utility method to get the line & column to which a JSON pointer points in a given JSON string.
 
 More information about JSON pointers [in the RFC6901](http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-09);
+
+## End of support
+
+This package is no longer maintained.
+
+The last version is the `1.0.2` from `2026/03/24`.
 
 ## How to use
 
